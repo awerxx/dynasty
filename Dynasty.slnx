@@ -1,0 +1,22 @@
+<Solution>
+  <Folder Name="/Carrington/">
+    <Project Path="src/Dynasty.Carrington.Core/Dynasty.Carrington.Core.csproj" />
+  </Folder>
+  <Folder Name="/Carrington/Blake/">
+    <Project Path="src/Dynasty.Carrington.Blake.Application/Dynasty.Carrington.Blake.Application.csproj" />
+    <Project Path="src/Dynasty.Carrington.Blake.Domain/Dynasty.Carrington.Blake.Domain.csproj" />
+    <Project Path="src/Dynasty.Carrington.Blake.Infrastructure/Dynasty.Carrington.Blake.Infrastructure.csproj" />
+    <Project Path="src/Dynasty.Carrington.Blake.Web/Dynasty.Carrington.Blake.Web.csproj" />
+  </Folder>
+  <Folder Name="/Carrington/Linda/">
+    <Project Path="src/Dynasty.Carrington.Linda.Api/Dynasty.Carrington.Linda.Api.csproj" />
+    <Project Path="src/Dynasty.Carrington.Linda.Application/Dynasty.Carrington.Linda.Application.csproj" />
+    <Project Path="src/Dynasty.Carrington.Linda.Domain/Dynasty.Carrington.Linda.Domain.csproj" />
+    <Project Path="src/Dynasty.Carrington.Linda.Infrastructure/Dynasty.Carrington.Linda.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="tests/Dynasty.Carrington.Blake.Tests/Dynasty.Carrington.Blake.Tests.csproj" />
+    <Project Path="tests/Dynasty.Carrington.Linda.Tests/Dynasty.Carrington.Linda.Tests.csproj" />
+  </Folder>
+  <Project Path="src/Dynasty.Utils/Dynasty.Utils.csproj" />
+</Solution>

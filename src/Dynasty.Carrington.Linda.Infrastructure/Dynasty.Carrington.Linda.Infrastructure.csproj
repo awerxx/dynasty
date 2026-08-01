@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dynasty.Carrington.Linda.Application\Dynasty.Carrington.Linda.Application.csproj" />
+  </ItemGroup>
+
+</Project>

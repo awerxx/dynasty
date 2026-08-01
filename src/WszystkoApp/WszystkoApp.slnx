@@ -1,7 +1,0 @@
-<Solution>
-  <Folder Name="/Carrington/">
-    <Project Path="Carrington.Blake.Admin/Carrington.Blake.Admin.csproj" />
-    <Project Path="Carrington.Blake/Carrington.Blake.csproj" />
-  </Folder>
-  <Folder Name="/SolutionFolder/" />
-</Solution>

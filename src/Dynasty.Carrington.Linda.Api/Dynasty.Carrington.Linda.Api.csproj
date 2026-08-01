@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.10" />
+    <PackageReference Include="Microsoft.OpenApi" Version="2.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dynasty.Carrington.Linda.Infrastructure\Dynasty.Carrington.Linda.Infrastructure.csproj" />
+    <ProjectReference Include="..\Dynasty.Carrington.Linda.Application\Dynasty.Carrington.Linda.Application.csproj" />
+  </ItemGroup>
+
+</Project>

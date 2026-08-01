@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dynasty.Carrington.Blake.Infrastructure\Dynasty.Carrington.Blake.Infrastructure.csproj" />
+    <ProjectReference Include="..\Dynasty.Carrington.Blake.Application\Dynasty.Carrington.Blake.Application.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
+  </PropertyGroup>
+
+</Project>
