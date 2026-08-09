@@ -14,6 +14,10 @@
     <Project Path="src/Dynasty.Carrington.Linda.Domain/Dynasty.Carrington.Linda.Domain.csproj" />
     <Project Path="src/Dynasty.Carrington.Linda.Infrastructure/Dynasty.Carrington.Linda.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/SolutionFolder/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+  </Folder>
   <Folder Name="/Tests/">
     <Project Path="tests/Dynasty.Carrington.Blake.Tests/Dynasty.Carrington.Blake.Tests.csproj" />
     <Project Path="tests/Dynasty.Carrington.Linda.Tests/Dynasty.Carrington.Linda.Tests.csproj" />
