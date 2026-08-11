@@ -1,0 +1,17 @@
+<Project Sdk="Aspire.AppHost.Sdk/13.4.6">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <UserSecretsId>e2f81350-2892-4a7b-890f-34e3b53a46c4</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.JavaScript" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dynasty.Carrington.Blake.Web\Dynasty.Carrington.Blake.Web.csproj" />
+    <ProjectReference Include="..\Dynasty.Carrington.Linda.Api\Dynasty.Carrington.Linda.Api.csproj" />
+  </ItemGroup>
+
+</Project>

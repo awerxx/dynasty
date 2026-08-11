@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Dynasty.Carrington.Linda.Infrastructure\Dynasty.Carrington.Linda.Infrastructure.csproj" />
     <ProjectReference Include="..\Dynasty.Carrington.Linda.Application\Dynasty.Carrington.Linda.Application.csproj" />
+    <ProjectReference Include="..\Dynasty.Carrington.ServiceDefaults\Dynasty.Carrington.ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>

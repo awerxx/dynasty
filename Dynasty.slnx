@@ -1,4 +1,8 @@
 <Solution>
+  <Folder Name="/AppHost/">
+    <Project Path="src/Dynasty.Carrington.AppHost/Dynasty.Carrington.AppHost.csproj" />
+    <Project Path="src/Dynasty.Carrington.ServiceDefaults/Dynasty.Carrington.ServiceDefaults.csproj" />
+  </Folder>
   <Folder Name="/Carrington/">
     <Project Path="src/Dynasty.Carrington.Core/Dynasty.Carrington.Core.csproj" />
   </Folder>
@@ -17,6 +21,8 @@
   <Folder Name="/SolutionFolder/">
     <File Path=".editorconfig" />
     <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
   </Folder>
   <Folder Name="/Tests/">
     <Project Path="tests/Dynasty.Carrington.Blake.Tests/Dynasty.Carrington.Blake.Tests.csproj" />
