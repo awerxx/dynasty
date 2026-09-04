@@ -1,23 +1,58 @@
-﻿@inherits LayoutComponentBase
+@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
+<MudThemeProvider @bind-IsDarkMode="@isDarkMode"/>
+<MudPopoverProvider/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu"
+                       Color="Color.Inherit"
+                       Edge="Edge.Start"
+                       aria-label="Toggle navigation"
+                       OnClick="@ToggleDrawer"/>
+        <MudText Typo="Typo.h6">Blake</MudText>
+        <MudSpacer/>
+        <MudIconButton Icon="@DarkModeIcon"
+                       Color="Color.Inherit"
+                       aria-label="Toggle dark mode"
+                       OnClick="@ToggleDarkMode"/>
+    </MudAppBar>
+
+    <MudDrawer @bind-Open="@isDrawerOpen" Elevation="1" ClipMode="DrawerClipMode.Always">
         <NavMenu/>
-    </div>
+    </MudDrawer>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
+    <MudMainContent Class="pt-16 pa-4">
+        <MudContainer MaxWidth="MaxWidth.Large">
             @Body
-        </article>
-    </main>
-</div>
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
 
 <div id="blazor-error-ui" data-nosnippet>
     An unhandled error has occurred.
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+
+@code {
+    private bool isDrawerOpen = true;
+    private bool isDarkMode;
+
+    private string DarkModeIcon => isDarkMode
+        ? Icons.Material.Filled.LightMode
+        : Icons.Material.Filled.DarkMode;
+
+    private void ToggleDrawer()
+    {
+        isDrawerOpen = !isDrawerOpen;
+    }
+
+    private void ToggleDarkMode()
+    {
+        isDarkMode = !isDarkMode;
+    }
+
+}

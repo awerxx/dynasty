@@ -1,5 +1,7 @@
 using Dynasty.Carrington.Blake.Web.Components;
 
+using MudBlazor.Services;
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
@@ -7,6 +9,8 @@ builder.AddServiceDefaults();
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddMudServices();
 
 builder.Services.AddBlakeApplication();
 builder.Services.AddBlakeDatabase();
