@@ -9,7 +9,7 @@ WORKDIR /src
 # Copy csproj files first so `dotnet restore` is cached until dependencies change.
 COPY ["Directory.Build.props", "Directory.Packages.props", "./"]
 COPY ["src/Dynasty.Carrington.Blake.Web/Dynasty.Carrington.Blake.Web.csproj", "src/Dynasty.Carrington.Blake.Web/"]
-COPY ["src/Dynasty.Carrington.Blake.Infrastructure/Dynasty.Carrington.Blake.Infrastructure.csproj", "src/Dynasty.Carrington.Blake.Infrastructure/"]
+COPY ["src/Dynasty.Carrington.Blake.Infrastructure.Database/Dynasty.Carrington.Blake.Infrastructure.Database.csproj", "src/Dynasty.Carrington.Blake.Infrastructure.Database/"]
 COPY ["src/Dynasty.Carrington.Blake.Application/Dynasty.Carrington.Blake.Application.csproj", "src/Dynasty.Carrington.Blake.Application/"]
 COPY ["src/Dynasty.Carrington.Blake.Domain/Dynasty.Carrington.Blake.Domain.csproj", "src/Dynasty.Carrington.Blake.Domain/"]
 COPY ["src/Dynasty.Carrington.Core/Dynasty.Carrington.Core.csproj", "src/Dynasty.Carrington.Core/"]
@@ -18,7 +18,7 @@ RUN dotnet restore "src/Dynasty.Carrington.Blake.Web/Dynasty.Carrington.Blake.We
 
 # Copy the rest of the source and publish.
 COPY src/Dynasty.Carrington.Blake.Web/ src/Dynasty.Carrington.Blake.Web/
-COPY src/Dynasty.Carrington.Blake.Infrastructure/ src/Dynasty.Carrington.Blake.Infrastructure/
+COPY src/Dynasty.Carrington.Blake.Infrastructure.Database/ src/Dynasty.Carrington.Blake.Infrastructure.Database/
 COPY src/Dynasty.Carrington.Blake.Application/ src/Dynasty.Carrington.Blake.Application/
 COPY src/Dynasty.Carrington.Blake.Domain/ src/Dynasty.Carrington.Blake.Domain/
 COPY src/Dynasty.Carrington.Core/ src/Dynasty.Carrington.Core/

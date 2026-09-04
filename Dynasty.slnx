@@ -9,8 +9,8 @@
   <Folder Name="/Carrington/Blake/">
     <Project Path="src/Dynasty.Carrington.Blake.Application/Dynasty.Carrington.Blake.Application.csproj" />
     <Project Path="src/Dynasty.Carrington.Blake.Domain/Dynasty.Carrington.Blake.Domain.csproj" />
-    <Project Path="src/Dynasty.Carrington.Blake.Infrastructure/Dynasty.Carrington.Blake.Infrastructure.csproj" />
     <Project Path="src/Dynasty.Carrington.Blake.Web/Dynasty.Carrington.Blake.Web.csproj" />
+    <Project Path="src\Dynasty.Carrington.Blake.Infrastructure.Database\Dynasty.Carrington.Blake.Infrastructure.Database.csproj" />
   </Folder>
   <Folder Name="/Carrington/Linda/">
     <Project Path="src/Dynasty.Carrington.Linda.Api/Dynasty.Carrington.Linda.Api.csproj" />

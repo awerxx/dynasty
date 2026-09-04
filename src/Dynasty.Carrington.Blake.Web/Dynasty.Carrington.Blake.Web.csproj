@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
-    <ProjectReference Include="..\Dynasty.Carrington.Blake.Infrastructure\Dynasty.Carrington.Blake.Infrastructure.csproj" />
+    <ProjectReference Include="..\Dynasty.Carrington.Blake.Infrastructure.Database\Dynasty.Carrington.Blake.Infrastructure.Database.csproj" />
     <ProjectReference Include="..\Dynasty.Carrington.Blake.Application\Dynasty.Carrington.Blake.Application.csproj" />
     <ProjectReference Include="..\Dynasty.Carrington.ServiceDefaults\Dynasty.Carrington.ServiceDefaults.csproj" />
   </ItemGroup>
