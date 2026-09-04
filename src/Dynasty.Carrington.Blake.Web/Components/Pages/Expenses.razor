@@ -1,0 +1,65 @@
+@page "/expenses"
+@using System.Globalization
+@attribute [StreamRendering]
+@inject IQueryHandler<GetMonthlyExpensesQuery, IReadOnlyList<MonthlyExpenseSummary>> MonthlyExpenses
+
+<PageTitle>Expenses</PageTitle>
+
+<h1>Expenses</h1>
+
+<p>What was spent each month in @year.</p>
+
+@if (summaries is null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (summaries.Count == 0)
+{
+    <p>No expenses recorded for @year.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Month</th>
+            <th class="text-end">Expenses</th>
+            <th class="text-end">Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var summary in summaries)
+        {
+            <tr>
+                <td>@MonthName(summary.Month)</td>
+                <td class="text-end">@summary.ExpenseCount</td>
+                <td class="text-end">@summary.Total.ToString("C", CultureInfo.CurrentCulture)</td>
+            </tr>
+        }
+        </tbody>
+        <tfoot>
+        <tr class="fw-bold">
+            <td>Year total</td>
+            <td class="text-end">@summaries.Sum(summary => summary.ExpenseCount)</td>
+            <td class="text-end">@summaries.Sum(summary => summary.Total).ToString("C", CultureInfo.CurrentCulture)</td>
+        </tr>
+        </tfoot>
+    </table>
+}
+
+@code {
+    private readonly int year = DateTime.Today.Year;
+
+    private IReadOnlyList<MonthlyExpenseSummary>? summaries;
+
+    protected override async Task OnInitializedAsync()
+    {
+        summaries = await MonthlyExpenses.Handle(new GetMonthlyExpensesQuery(year), CancellationToken.None);
+    }
+
+    private static string MonthName(int month)
+    {
+        return CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month);
+    }
+
+}
