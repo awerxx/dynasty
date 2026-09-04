@@ -1,7 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Dynasty.Carrington.Blake.Domain\Dynasty.Carrington.Blake.Domain.csproj" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dynasty.Carrington.Blake.Domain\Dynasty.Carrington.Blake.Domain.csproj"/>
   </ItemGroup>
 
 </Project>

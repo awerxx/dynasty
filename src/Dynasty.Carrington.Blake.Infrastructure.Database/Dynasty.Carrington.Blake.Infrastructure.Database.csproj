@@ -1,7 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Dynasty.Carrington.Blake.Application\Dynasty.Carrington.Blake.Application.csproj" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dynasty.Carrington.Blake.Application\Dynasty.Carrington.Blake.Application.csproj"/>
   </ItemGroup>
 
 </Project>

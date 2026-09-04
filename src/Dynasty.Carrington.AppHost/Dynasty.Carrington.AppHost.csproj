@@ -6,12 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspire.Hosting.JavaScript" />
+    <PackageReference Include="Aspire.Hosting.JavaScript"/>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dynasty.Carrington.Blake.Web\Dynasty.Carrington.Blake.Web.csproj" />
-    <ProjectReference Include="..\Dynasty.Carrington.Linda.Api\Dynasty.Carrington.Linda.Api.csproj" />
+    <ProjectReference Include="..\Dynasty.Carrington.Blake.Web\Dynasty.Carrington.Blake.Web.csproj"/>
+    <ProjectReference Include="..\Dynasty.Carrington.Linda.Api\Dynasty.Carrington.Linda.Api.csproj"/>
   </ItemGroup>
 
 </Project>

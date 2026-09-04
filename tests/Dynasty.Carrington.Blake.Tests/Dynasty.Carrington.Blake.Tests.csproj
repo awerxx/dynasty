@@ -5,19 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="coverlet.collector" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" />
-    <PackageReference Include="xunit.v3" />
-    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="coverlet.collector"/>
+    <PackageReference Include="Microsoft.NET.Test.Sdk"/>
+    <PackageReference Include="xunit.v3"/>
+    <PackageReference Include="xunit.runner.visualstudio"/>
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Xunit" />
+    <Using Include="Xunit"/>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Dynasty.Carrington.Blake.Application\Dynasty.Carrington.Blake.Application.csproj" />
-    <ProjectReference Include="..\..\src\Dynasty.Carrington.Blake.Domain\Dynasty.Carrington.Blake.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Dynasty.Carrington.Blake.Application\Dynasty.Carrington.Blake.Application.csproj"/>
+    <ProjectReference Include="..\..\src\Dynasty.Carrington.Blake.Domain\Dynasty.Carrington.Blake.Domain.csproj"/>
   </ItemGroup>
 
 </Project>
