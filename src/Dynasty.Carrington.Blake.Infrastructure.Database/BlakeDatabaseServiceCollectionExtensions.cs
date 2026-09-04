@@ -1,12 +1,12 @@
 using Dynasty.Carrington.Blake.Application.Abstractions;
 using Dynasty.Carrington.Blake.Domain.Expenses;
-using Dynasty.Carrington.Blake.Infrastructure.Database;
 using Dynasty.Carrington.Blake.Infrastructure.Database.Repositories;
 using Dynasty.Carrington.Blake.Infrastructure.Database.Seeding;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace Dynasty.Carrington.Blake.Infrastructure.Database;
 
 public static class BlakeDatabaseServiceCollectionExtensions
 {
