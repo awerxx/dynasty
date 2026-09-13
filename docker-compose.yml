@@ -2,7 +2,7 @@ services:
   linda-api:
     build:
       context: .
-      dockerfile: src/Dynasty.Carrington.Linda.Api/Dockerfile
+      dockerfile: src/Linda/Api/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
@@ -12,7 +12,7 @@ services:
   blake-web:
     build:
       context: .
-      dockerfile: src/Dynasty.Carrington.Blake.Web/Dockerfile
+      dockerfile: src/Blake/Web/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080

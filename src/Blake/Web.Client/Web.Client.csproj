@@ -8,6 +8,8 @@
     <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
     <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <AssemblyName>Dynasty.Carrington.Blake.Web.Client</AssemblyName>
+    <RootNamespace>Dynasty.Carrington.Blake.Web.Client</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,9 +18,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\..\.dockerignore">
+    <Content Include="..\..\..\.dockerignore">
       <Link>.dockerignore</Link>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Web.Shared\Web.Shared.csproj" />
   </ItemGroup>
 
 </Project>

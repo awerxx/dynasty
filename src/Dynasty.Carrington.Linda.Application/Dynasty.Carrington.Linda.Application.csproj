@@ -1,7 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-  <ItemGroup>
-    <ProjectReference Include="..\Dynasty.Carrington.Linda.Domain\Dynasty.Carrington.Linda.Domain.csproj"/>
-  </ItemGroup>
-
-</Project>

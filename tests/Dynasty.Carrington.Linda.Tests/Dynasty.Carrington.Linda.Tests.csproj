@@ -22,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Dynasty.Carrington.Linda.Application\Dynasty.Carrington.Linda.Application.csproj"/>
-    <ProjectReference Include="..\..\src\Dynasty.Carrington.Linda.Domain\Dynasty.Carrington.Linda.Domain.csproj"/>
+    <ProjectReference Include="..\..\src\Linda\Application\Application.csproj"/>
+    <ProjectReference Include="..\..\src\Linda\Domain\Domain.csproj"/>
   </ItemGroup>
 
 </Project>

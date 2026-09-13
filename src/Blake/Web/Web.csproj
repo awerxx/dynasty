@@ -7,6 +7,8 @@
     <UserSecretsId>aspnet-Dynasty_Carrington_Blake_Web-17f3ce76-2407-4cb6-8633-6da6fdfca4b7</UserSecretsId>
     <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <AssemblyName>Dynasty.Carrington.Blake.Web</AssemblyName>
+    <RootNamespace>Dynasty.Carrington.Blake.Web</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,7 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dynasty.Carrington.Blake.Web.Client\Dynasty.Carrington.Blake.Web.Client.csproj"/>
+    <ProjectReference Include="..\Web.Shared\Web.Shared.csproj" />
+    <ProjectReference Include="..\Web.Client\Web.Client.csproj"/>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server"/>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore"/>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore"/>
@@ -24,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\..\.dockerignore">
+    <Content Include="..\..\..\.dockerignore">
       <Link>.dockerignore</Link>
     </Content>
   </ItemGroup>

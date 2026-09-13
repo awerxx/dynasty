@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dynasty.Carrington.Linda.Api\Dynasty.Carrington.Linda.Api.csproj"/>
-    <ProjectReference Include="..\..\Dynasty.Carrington.Blake.Web\Dynasty.Carrington.Blake.Web\Dynasty.Carrington.Blake.Web.csproj"/>
+    <ProjectReference Include="..\Linda\Api\Api.csproj"/>
+    <ProjectReference Include="..\Blake\Web\Web.csproj"/>
   </ItemGroup>
 
 </Project>

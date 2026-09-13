@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>Dynasty.Carrington.Linda.Domain</AssemblyName>
+    <RootNamespace>Dynasty.Carrington.Linda.Domain</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Dynasty.Carrington.Core\Dynasty.Carrington.Core.csproj"/>
+  </ItemGroup>
+
+</Project>
