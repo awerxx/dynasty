@@ -7,9 +7,11 @@
     <Project Path="src/Dynasty.Carrington.Core/Dynasty.Carrington.Core.csproj"/>
   </Folder>
   <Folder Name="/Carrington/Blake/">
+    <Project
+      Path="Dynasty.Carrington.Blake.Web/Dynasty.Carrington.Blake.Web.Client/Dynasty.Carrington.Blake.Web.Client.csproj"/>
+    <Project Path="Dynasty.Carrington.Blake.Web/Dynasty.Carrington.Blake.Web/Dynasty.Carrington.Blake.Web.csproj"/>
     <Project Path="src/Dynasty.Carrington.Blake.Application/Dynasty.Carrington.Blake.Application.csproj"/>
     <Project Path="src/Dynasty.Carrington.Blake.Domain/Dynasty.Carrington.Blake.Domain.csproj"/>
-    <Project Path="src/Dynasty.Carrington.Blake.Web/Dynasty.Carrington.Blake.Web.csproj"/>
     <Project
       Path="src\Dynasty.Carrington.Blake.Infrastructure.Database\Dynasty.Carrington.Blake.Infrastructure.Database.csproj"/>
   </Folder>
