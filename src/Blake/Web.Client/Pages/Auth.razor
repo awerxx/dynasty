@@ -1,12 +1,12 @@
-﻿@page "/auth"
+@page "/auth"
 @using Microsoft.AspNetCore.Authorization
 
 @attribute [Authorize]
 
 <PageTitle>Auth</PageTitle>
 
-<h1>You are authenticated</h1>
+<MudText Typo="Typo.h3" GutterBottom="true">You are authenticated</MudText>
 
 <AuthorizeView>
-    Hello @context.User.Identity?.Name!
+    <MudText Typo="Typo.body1">Hello @context.User.Identity?.Name!</MudText>
 </AuthorizeView>

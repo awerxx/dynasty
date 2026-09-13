@@ -1,4 +1,4 @@
-﻿@page "/Account/Manage/Passkeys"
+@page "/Account/Manage/Passkeys"
 @using System.Buffers.Text
 @using Dynasty.Carrington.Blake.Web.Data
 @using Microsoft.AspNetCore.Identity
@@ -9,58 +9,64 @@
 
 <PageTitle>Manage your passkeys</PageTitle>
 
-<h3>Manage your passkeys</h3>
+<MudText Typo="Typo.h5" GutterBottom="true">Manage your passkeys</MudText>
 
 <StatusMessage/>
 
 @if (currentPasskeys is { Count: > 0 })
 {
-    <table class="table">
-        <tbody>
-        @foreach (var passkey in currentPasskeys)
-        {
-            <tr>
-                <td>@(passkey.Name ?? "Unnamed passkey")</td>
-                <td>
-                    @{
-                        var credentialId = Base64Url.EncodeToString(passkey.CredentialId);
-                    }
-                    <form @formname="@($"update-passkey-{credentialId}")" @onsubmit="UpdatePasskey" method="post">
-                        <AntiforgeryToken/>
-                        <div>
+    <MudPaper Class="mb-4" Elevation="1">
+        <MudSimpleTable Hover="true" Striped="true" Elevation="0">
+            <tbody>
+            @foreach (var passkey in currentPasskeys)
+            {
+                <tr>
+                    <td>@(passkey.Name ?? "Unnamed passkey")</td>
+                    <td>
+                        @{
+                            var credentialId = Base64Url.EncodeToString(passkey.CredentialId);
+                        }
+                        <form @formname="@($"update-passkey-{credentialId}")" @onsubmit="UpdatePasskey" method="post">
+                            <AntiforgeryToken/>
                             <input type="hidden" name="CredentialId" value="@credentialId"/>
-                            <button type="submit" name="Action" value="rename" class="btn btn-primary"
-                                    title="Rename this passkey">Rename
-                            </button>
-                            <button type="submit" name="Action" value="delete" class="btn btn-danger"
-                                    title="Remove this passkey from your account">Delete
-                            </button>
-                        </div>
-                    </form>
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
+                            <MudStack Row="true" Spacing="2">
+                                <MudButton ButtonType="ButtonType.Submit" name="Action" value="rename"
+                                           Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small"
+                                           title="Rename this passkey">Rename
+                                </MudButton>
+                                <MudButton ButtonType="ButtonType.Submit" name="Action" value="delete"
+                                           Variant="Variant.Filled" Color="Color.Error" Size="Size.Small"
+                                           title="Remove this passkey from your account">Delete
+                                </MudButton>
+                            </MudStack>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </MudSimpleTable>
+    </MudPaper>
 }
 else
 {
-    <p>No passkeys are registered.</p>
+    <MudText Typo="Typo.body1" Class="mb-4">No passkeys are registered.</MudText>
 }
 
 <form @formname="add-passkey" @onsubmit="AddPasskey" method="post">
     <AntiforgeryToken/>
     @if (currentPasskeys is { Count: >= MaxPasskeyCount })
     {
-        <p class="text-danger">You have reached the maximum number of allowed passkeys. Please delete one before adding
-            a new one.</p>
+        <MudAlert Severity="Severity.Error" Variant="Variant.Outlined">
+            You have reached the maximum number of allowed passkeys. Please delete one before adding a new one.
+        </MudAlert>
     }
     else
     {
-        <PasskeySubmit Operation="PasskeyOperation.Create" Name="Input" class="btn btn-primary">Add a new passkey
+        <PasskeySubmit Operation="PasskeyOperation.Create" Name="Input"
+                       Variant="Variant.Filled" Color="Color.Primary"
+                       StartIcon="@Icons.Material.Filled.Key">Add a new passkey
         </PasskeySubmit>
     }
-
 </form>
 
 @code {

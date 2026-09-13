@@ -1,4 +1,4 @@
-﻿@page "/Account/Manage/PersonalData"
+@page "/Account/Manage/PersonalData"
 @using Dynasty.Carrington.Blake.Web.Data
 @using Microsoft.AspNetCore.Identity
 
@@ -8,24 +8,31 @@
 <PageTitle>Personal Data</PageTitle>
 
 <StatusMessage/>
-<h3>Personal Data</h3>
 
-<div class="row">
-    <div class="col-md-6">
-        <p>Your account contains personal data that you have given us. This page allows you to download or delete that
-            data.</p>
-        <p>
-            <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
-        </p>
+<MudText Typo="Typo.h5" GutterBottom="true">Personal Data</MudText>
+
+<MudPaper Class="pa-6" Elevation="1">
+    <MudText Typo="Typo.body1" GutterBottom="true">
+        Your account contains personal data that you have given us. This page allows you to download or delete that
+        data.
+    </MudText>
+
+    <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Class="my-4">
+        <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
+    </MudAlert>
+
+    <MudStack Row="true" Spacing="2">
         <form action="Account/Manage/DownloadPersonalData" method="post">
             <AntiforgeryToken/>
-            <button class="btn btn-primary" type="submit">Download</button>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"
+                       StartIcon="@Icons.Material.Filled.Download">Download
+            </MudButton>
         </form>
-        <p>
-            <a href="Account/Manage/DeletePersonalData" class="btn btn-danger">Delete</a>
-        </p>
-    </div>
-</div>
+        <MudButton Href="Account/Manage/DeletePersonalData" Variant="Variant.Filled" Color="Color.Error"
+                   StartIcon="@Icons.Material.Filled.Delete">Delete
+        </MudButton>
+    </MudStack>
+</MudPaper>
 
 @code {
     [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;

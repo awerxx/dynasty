@@ -1,4 +1,4 @@
-﻿@page "/Account/Register"
+@page "/Account/Register"
 @using System.ComponentModel.DataAnnotations
 @using System.Text
 @using System.Text.Encodings.Web
@@ -16,46 +16,53 @@
 
 <PageTitle>Register</PageTitle>
 
-<h1>Register</h1>
+<MudText Typo="Typo.h4" GutterBottom="true">Register</MudText>
 
-<div class="row">
-    <div class="col-lg-6">
-        <StatusMessage Message="@Message"/>
-        <EditForm Model="Input" method="post" OnValidSubmit="RegisterUser" FormName="register">
-            <DataAnnotationsValidator/>
-            <h2>Create a new account.</h2>
-            <hr/>
-            <ValidationSummary class="text-danger" role="alert"/>
-            <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.Email" id="Input.Email" class="form-control" autocomplete="username"
-                           aria-required="true" placeholder="name@example.com"/>
-                <label for="Input.Email">Email</label>
-                <ValidationMessage For="() => Input.Email" class="text-danger"/>
-            </div>
-            <div class="form-floating mb-3">
-                <InputText type="password" @bind-Value="Input.Password" id="Input.Password" class="form-control"
-                           autocomplete="new-password" aria-required="true" placeholder="password"/>
-                <label for="Input.Password">Password</label>
-                <ValidationMessage For="() => Input.Password" class="text-danger"/>
-            </div>
-            <div class="form-floating mb-3">
-                <InputText type="password" @bind-Value="Input.ConfirmPassword" id="Input.ConfirmPassword"
-                           class="form-control" autocomplete="new-password" aria-required="true"
-                           placeholder="password"/>
-                <label for="Input.ConfirmPassword">Confirm Password</label>
-                <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger"/>
-            </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </EditForm>
-    </div>
-    <div class="col-lg-4 col-lg-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr/>
+<MudGrid>
+    <MudItem xs="12" md="6">
+        <MudPaper Class="pa-6" Elevation="1">
+            <StatusMessage Message="@Message"/>
+            <EditForm Model="Input" method="post" OnValidSubmit="RegisterUser" FormName="register">
+                <DataAnnotationsValidator/>
+
+                <MudText Typo="Typo.h6" GutterBottom="true">Create a new account.</MudText>
+                <MudDivider Class="mb-4"/>
+
+                <ValidationSummary role="alert"/>
+
+                <MudTextField T="string" @bind-Value="Input.Email" For="@(() => Input.Email)"
+                              name="Input.Email" id="Input.Email"
+                              Label="Email" Variant="Variant.Outlined" InputType="InputType.Email"
+                              Placeholder="name@example.com" autocomplete="username"
+                              Required="true" Class="mb-4"/>
+
+                <MudTextField T="string" @bind-Value="Input.Password" For="@(() => Input.Password)"
+                              name="Input.Password" id="Input.Password"
+                              Label="Password" Variant="Variant.Outlined" InputType="InputType.Password"
+                              Placeholder="password" autocomplete="new-password"
+                              Required="true" Class="mb-4"/>
+
+                <MudTextField T="string" @bind-Value="Input.ConfirmPassword" For="@(() => Input.ConfirmPassword)"
+                              name="Input.ConfirmPassword" id="Input.ConfirmPassword"
+                              Label="Confirm Password" Variant="Variant.Outlined" InputType="InputType.Password"
+                              Placeholder="password" autocomplete="new-password"
+                              Required="true" Class="mb-4"/>
+
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"
+                           Size="Size.Large" FullWidth="true">Register
+                </MudButton>
+            </EditForm>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="12" md="6">
+        <MudPaper Class="pa-6" Elevation="1">
+            <MudText Typo="Typo.h6" GutterBottom="true">Use another service to register.</MudText>
+            <MudDivider Class="mb-4"/>
             <ExternalLoginPicker/>
-        </section>
-    </div>
-</div>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
 
 @code {
     private IEnumerable<IdentityError>? identityErrors;

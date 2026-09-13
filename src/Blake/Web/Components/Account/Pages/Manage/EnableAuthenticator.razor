@@ -1,4 +1,4 @@
-﻿@page "/Account/Manage/EnableAuthenticator"
+@page "/Account/Manage/EnableAuthenticator"
 @using System.ComponentModel.DataAnnotations
 @using System.Globalization
 @using System.Text
@@ -20,54 +20,64 @@
 else
 {
     <StatusMessage Message="@message"/>
-    <h3>Configure authenticator app</h3>
-    <div>
-        <p>To use an authenticator app go through the following steps:</p>
-        <ol class="list">
-            <li>
-                <p>
+
+    <MudText Typo="Typo.h5" GutterBottom="true">Configure authenticator app</MudText>
+
+    <MudText Typo="Typo.body1" Class="mb-4">To use an authenticator app go through the following steps:</MudText>
+
+    <MudPaper Class="pa-6" Elevation="1">
+        <ol class="mud-typography mud-typography-body1">
+            <li class="mb-4">
+                <MudText Typo="Typo.body1">
                     Download a two-factor authenticator app like Microsoft Authenticator for
-                    <a href="https://go.microsoft.com/fwlink/?Linkid=825072">Android</a> and
-                    <a href="https://go.microsoft.com/fwlink/?Linkid=825073">iOS</a> or
-                    Google Authenticator for
-                    <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&amp;hl=en">Android</a>
+                    <MudLink Href="https://go.microsoft.com/fwlink/?Linkid=825072">Android</MudLink>
                     and
-                    <a href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8">iOS</a>.
-                </p>
+                    <MudLink Href="https://go.microsoft.com/fwlink/?Linkid=825073">iOS</MudLink>
+                    or Google Authenticator for
+                    <MudLink
+                        Href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&amp;hl=en">
+                        Android
+                    </MudLink>
+                    and
+                    <MudLink Href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8">iOS</MudLink>.
+                </MudText>
             </li>
-            <li>
-                <p>Scan the QR Code or enter this key <kbd>@sharedKey</kbd> into your two factor authenticator app.
-                    Spaces and casing do not matter.</p>
-                <div class="alert alert-info">Learn how to <a href="https://go.microsoft.com/fwlink/?Linkid=852423">enable
-                        QR code generation</a>.
-                </div>
+            <li class="mb-4">
+                <MudText Typo="Typo.body1" GutterBottom="true">
+                    Scan the QR Code or enter this key
+                    <MudChip T="string" Size="Size.Small" Color="Color.Primary" Variant="Variant.Text">@sharedKey</MudChip>
+                    into your two factor authenticator app. Spaces and casing do not matter.
+                </MudText>
+                <MudAlert Severity="Severity.Info" Variant="Variant.Outlined" Dense="true" Class="my-2">
+                    Learn how to
+                    <MudLink Href="https://go.microsoft.com/fwlink/?Linkid=852423">enable QR code generation</MudLink>.
+                </MudAlert>
                 <div></div>
                 <div data-url="@authenticatorUri"></div>
             </li>
             <li>
-                <p>
+                <MudText Typo="Typo.body1" GutterBottom="true">
                     Once you have scanned the QR code or input the key above, your two factor authentication app will
-                    provide you
-                    with a unique code. Enter the code in the confirmation box below.
-                </p>
-                <div class="row">
-                    <div class="col-xl-6">
-                        <EditForm Model="Input" FormName="send-code" OnValidSubmit="OnValidSubmitAsync" method="post">
-                            <DataAnnotationsValidator/>
-                            <div class="form-floating mb-3">
-                                <InputText @bind-Value="Input.Code" id="Input.Code" class="form-control"
-                                           autocomplete="off" placeholder="Enter the code"/>
-                                <label for="Input.Code" class="control-label form-label">Verification Code</label>
-                                <ValidationMessage For="() => Input.Code" class="text-danger"/>
-                            </div>
-                            <button type="submit" class="w-100 btn btn-lg btn-primary">Verify</button>
-                            <ValidationSummary class="text-danger" role="alert"/>
-                        </EditForm>
-                    </div>
-                </div>
+                    provide you with a unique code. Enter the code in the confirmation box below.
+                </MudText>
+
+                <EditForm Model="Input" FormName="send-code" OnValidSubmit="OnValidSubmitAsync" method="post">
+                    <DataAnnotationsValidator/>
+
+                    <MudTextField T="string" @bind-Value="Input.Code" For="@(() => Input.Code)"
+                                  name="Input.Code" id="Input.Code"
+                                  Label="Verification Code" Variant="Variant.Outlined" autocomplete="off"
+                                  Placeholder="Enter the code" Required="true" Class="mb-4"/>
+
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary"
+                               Size="Size.Large" FullWidth="true">Verify
+                    </MudButton>
+
+                    <ValidationSummary role="alert"/>
+                </EditForm>
             </li>
         </ol>
-    </div>
+    </MudPaper>
 }
 
 @code {

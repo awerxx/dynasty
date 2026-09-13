@@ -1,4 +1,4 @@
-﻿@page "/Account/Manage/TwoFactorAuthentication"
+@page "/Account/Manage/TwoFactorAuthentication"
 @using Dynasty.Carrington.Blake.Web.Data
 @using Microsoft.AspNetCore.Http.Features
 @using Microsoft.AspNetCore.Identity
@@ -10,65 +10,91 @@
 <PageTitle>Two-factor authentication (2FA)</PageTitle>
 
 <StatusMessage/>
-<h3>Two-factor authentication (2FA)</h3>
+
+<MudText Typo="Typo.h5" GutterBottom="true">Two-factor authentication (2FA)</MudText>
+
 @if (canTrack)
 {
     if (is2faEnabled)
     {
         if (recoveryCodesLeft == 0)
         {
-            <div class="alert alert-danger">
-                <strong>You have no recovery codes left.</strong>
-                <p>You must <a href="Account/Manage/GenerateRecoveryCodes">generate a new set of recovery codes</a>
-                    before you can log in with a recovery code.</p>
-            </div>
+            <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Class="mb-4">
+                <MudText Typo="Typo.body1"><strong>You have no recovery codes left.</strong></MudText>
+                <MudText Typo="Typo.body2">
+                    You must
+                    <MudLink Href="Account/Manage/GenerateRecoveryCodes">generate a new set of recovery codes</MudLink>
+                    before you can log in with a recovery code.
+                </MudText>
+            </MudAlert>
         }
         else if (recoveryCodesLeft == 1)
         {
-            <div class="alert alert-danger">
-                <strong>You have 1 recovery code left.</strong>
-                <p>You can <a href="Account/Manage/GenerateRecoveryCodes">generate a new set of recovery codes</a>.</p>
-            </div>
+            <MudAlert Severity="Severity.Error" Variant="Variant.Outlined" Class="mb-4">
+                <MudText Typo="Typo.body1"><strong>You have 1 recovery code left.</strong></MudText>
+                <MudText Typo="Typo.body2">
+                    You can
+                    <MudLink Href="Account/Manage/GenerateRecoveryCodes">generate a new set of recovery codes</MudLink>.
+                </MudText>
+            </MudAlert>
         }
         else if (recoveryCodesLeft <= 3)
         {
-            <div class="alert alert-warning">
-                <strong>You have @recoveryCodesLeft recovery codes left.</strong>
-                <p>You should <a href="Account/Manage/GenerateRecoveryCodes">generate a new set of recovery codes</a>.
-                </p>
-            </div>
+            <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined" Class="mb-4">
+                <MudText Typo="Typo.body1"><strong>You have @recoveryCodesLeft recovery codes left.</strong></MudText>
+                <MudText Typo="Typo.body2">
+                    You should
+                    <MudLink Href="Account/Manage/GenerateRecoveryCodes">generate a new set of recovery codes</MudLink>.
+                </MudText>
+            </MudAlert>
         }
 
-        if (isMachineRemembered)
+        <MudStack Row="true" Spacing="2" Wrap="Wrap.Wrap" Class="mb-4">
+            @if (isMachineRemembered)
+            {
+                <form @formname="forget-browser" @onsubmit="OnSubmitForgetBrowserAsync" method="post">
+                    <AntiforgeryToken/>
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary">
+                        Forget this browser
+                    </MudButton>
+                </form>
+            }
+            <MudButton Href="Account/Manage/Disable2fa" Variant="Variant.Filled" Color="Color.Primary">Disable 2FA
+            </MudButton>
+            <MudButton Href="Account/Manage/GenerateRecoveryCodes" Variant="Variant.Filled" Color="Color.Primary">
+                Reset recovery codes
+            </MudButton>
+        </MudStack>
+    }
+
+    <MudText Typo="Typo.h6" GutterBottom="true">Authenticator app</MudText>
+
+    <MudStack Row="true" Spacing="2" Wrap="Wrap.Wrap">
+        @if (!hasAuthenticator)
         {
-            <form style="display: inline-block" @formname="forget-browser" @onsubmit="OnSubmitForgetBrowserAsync"
-                  method="post">
-                <AntiforgeryToken/>
-                <button type="submit" class="btn btn-primary">Forget this browser</button>
-            </form>
+            <MudButton Href="Account/Manage/EnableAuthenticator" Variant="Variant.Filled" Color="Color.Primary">
+                Add authenticator app
+            </MudButton>
         }
-
-        <a href="Account/Manage/Disable2fa" class="btn btn-primary">Disable 2FA</a>
-        <a href="Account/Manage/GenerateRecoveryCodes" class="btn btn-primary">Reset recovery codes</a>
-    }
-
-    <h4>Authenticator app</h4>
-    @if (!hasAuthenticator)
-    {
-        <a href="Account/Manage/EnableAuthenticator" class="btn btn-primary">Add authenticator app</a>
-    }
-    else
-    {
-        <a href="Account/Manage/EnableAuthenticator" class="btn btn-primary">Set up authenticator app</a>
-        <a href="Account/Manage/ResetAuthenticator" class="btn btn-primary">Reset authenticator app</a>
-    }
+        else
+        {
+            <MudButton Href="Account/Manage/EnableAuthenticator" Variant="Variant.Filled" Color="Color.Primary">
+                Set up authenticator app
+            </MudButton>
+            <MudButton Href="Account/Manage/ResetAuthenticator" Variant="Variant.Filled" Color="Color.Primary">
+                Reset authenticator app
+            </MudButton>
+        }
+    </MudStack>
 }
 else
 {
-    <div class="alert alert-danger">
-        <strong>Privacy and cookie policy have not been accepted.</strong>
-        <p>You must accept the policy before you can enable two factor authentication.</p>
-    </div>
+    <MudAlert Severity="Severity.Error" Variant="Variant.Outlined">
+        <MudText Typo="Typo.body1"><strong>Privacy and cookie policy have not been accepted.</strong></MudText>
+        <MudText Typo="Typo.body2">
+            You must accept the policy before you can enable two factor authentication.
+        </MudText>
+    </MudAlert>
 }
 
 @code {
