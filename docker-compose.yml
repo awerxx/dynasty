@@ -18,5 +18,12 @@ services:
       - ASPNETCORE_HTTP_PORTS=8080
     ports:
       - "5255:8080"
-    depends_on:
-      - linda-api
+
+  alexis-ui:
+    build:
+      context: .
+      dockerfile: src/Dynasty.Carrington.Alexis/Dockerfile
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "3000:3000"

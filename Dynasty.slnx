@@ -23,8 +23,11 @@
   <Folder Name="/SolutionFolder/">
     <File Path=".editorconfig" />
     <File Path=".gitignore" />
+    <File Path="CLAUDE.md" />
     <File Path="Directory.Build.props" />
     <File Path="Directory.Packages.props" />
+    <File Path="docker-compose.yml" />
+    <File Path="README.md" />
   </Folder>
   <Folder Name="/Tests/">
     <Project Path="tests/Dynasty.Carrington.Blake.Tests/Dynasty.Carrington.Blake.Tests.csproj" />

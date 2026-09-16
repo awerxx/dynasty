@@ -7,6 +7,7 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+COPY ["Directory.Build.props", "Directory.Packages.props", "./"]
 COPY ["src/Blake/Web/Web.csproj", "src/Blake/Web/"]
 COPY ["src/Blake/Web.Client/Web.Client.csproj", "src/Blake/Web.Client/"]
 COPY ["src/Blake/Web.Shared/Web.Shared.csproj", "src/Blake/Web.Shared/"]
