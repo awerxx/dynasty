@@ -1,0 +1,53 @@
+<MudDialog>
+    <DialogContent>
+        <MudText Typo="Typo.body2" Class="mb-4 mud-text-secondary">
+            Wpisz kwotę, która faktycznie przeszła przez konto. Rozliczona pozycja nie jest już liczona w prognozie.
+        </MudText>
+        <MudForm @ref="form">
+            <MudNumericField T="decimal" @bind-Value="amount" Label="Rzeczywista kwota" Format="N2" Culture="Pl.Culture"
+                             Min="0" HideSpinButtons="true" Adornment="Adornment.End" AdornmentText="zł" AutoFocus="true"
+                             Validation="@(new Func<decimal, string?>(AmountError))" Immediate="true" Class="mb-3"/>
+            <MudDatePicker @bind-Date="date" Label="Data" DateFormat="dd.MM.yyyy" Required="true" RequiredError="Podaj datę"/>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Anuluj</MudButton>
+        <MudButton Color="Color.Success" Variant="Variant.Filled" OnClick="Save">Rozlicz</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    private MudForm form = default!;
+    private decimal amount;
+    private DateTime? date;
+
+    [CascadingParameter] private IMudDialogInstance Dialog { get; set; } = default!;
+
+    [Parameter] public decimal Amount { get; set; }
+
+    [Parameter] public DateOnly Date { get; set; }
+
+    public sealed record Result(decimal Amount, DateOnly On);
+
+    protected override void OnInitialized()
+    {
+        amount = Amount;
+        date = Date.ToDateTime(TimeOnly.MinValue);
+    }
+
+    private static string? AmountError(decimal value) => value > 0 ? null : "Kwota musi być większa od zera";
+
+    private async Task Save()
+    {
+        await form.ValidateAsync();
+
+        if (!form.IsValid || date is null)
+        {
+            return;
+        }
+
+        Dialog.Close(DialogResult.Ok(new Result(amount, DateOnly.FromDateTime(date.Value))));
+    }
+
+    private void Cancel() => Dialog.Cancel();
+}

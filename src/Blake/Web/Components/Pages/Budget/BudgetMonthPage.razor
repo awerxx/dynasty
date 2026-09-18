@@ -1,0 +1,307 @@
+@page "/budzet"
+@page "/budzet/{Year:int}/{Month:int}"
+@attribute [Authorize]
+
+@using Dynasty.Carrington.Blake.Application.Budgeting.AddPlannedItem
+@using Dynasty.Carrington.Blake.Application.Budgeting.CopyPlanFromPreviousMonth
+@using Dynasty.Carrington.Blake.Application.Budgeting.DeletePlannedItem
+@using Dynasty.Carrington.Blake.Application.Budgeting.GetAccountBalance
+@using Dynasty.Carrington.Blake.Application.Budgeting.GetMonthsOutlook
+@using Dynasty.Carrington.Blake.Application.Budgeting.SetAccountBalance
+@using Dynasty.Carrington.Blake.Application.Budgeting.SettlePlannedItem
+@using Dynasty.Carrington.Blake.Application.Budgeting.UnsettlePlannedItem
+@using Dynasty.Carrington.Blake.Application.Budgeting.UpdatePlannedItem
+
+@inject HandlerDispatcher Dispatcher
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inject NavigationManager Navigation
+@inject TimeProvider Clock
+
+<PageTitle>Budżet – @Pl.MonthName(selected)</PageTitle>
+
+<MonthNavigator Month="selected" IsCurrent="selected == current"/>
+
+@if (overview is null)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-4"/>
+}
+else
+{
+    @if (!overview.HasAccountBalance && !overview.Summary.IsPast)
+    {
+        <MudAlert Severity="Severity.Warning" Class="mb-4">
+            <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Wrap="Wrap.Wrap">
+                <span>Nie ustawiono stanu konta, więc prognoza liczy od 0,00 zł.</span>
+                <MudButton Variant="Variant.Outlined" Color="Color.Warning" Size="Size.Small" OnClick="EditBalance">Ustaw stan konta</MudButton>
+            </MudStack>
+        </MudAlert>
+    }
+
+    @if (overview.CanCopyFromPreviousMonth)
+    {
+        <MudAlert Severity="Severity.Info" Class="mb-4">
+            <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Wrap="Wrap.Wrap">
+                <span>Ten miesiąc jest jeszcze pusty.</span>
+                <MudButton Variant="Variant.Outlined" Color="Color.Info" Size="Size.Small" StartIcon="@Icons.Material.Filled.ContentCopy" OnClick="CopyPlan">
+                    Skopiuj plan z poprzedniego miesiąca
+                </MudButton>
+            </MudStack>
+        </MudAlert>
+    }
+
+    <MonthSummaryCards Summary="overview.Summary" OnEditBalance="EditBalance"/>
+
+    <MudGrid>
+        <MudItem xs="12" md="6">
+            <PlannedItemsTable Title="Przychody" Kind="PlannedItemKind.Income" Items="Incomes"
+                               OnAdd="@(() => Add(PlannedItemKind.Income))" OnEdit="Edit" OnDelete="Delete"
+                               OnSettle="Settle" OnUnsettle="Unsettle"/>
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <PlannedItemsTable Title="Koszty" Kind="PlannedItemKind.Expense" Items="Expenses"
+                               OnAdd="@(() => Add(PlannedItemKind.Expense))" OnEdit="Edit" OnDelete="Delete"
+                               OnSettle="Settle" OnUnsettle="Unsettle"/>
+        </MudItem>
+    </MudGrid>
+
+    @if (outlook is not null)
+    {
+        <MonthsOutlookTable Months="outlook" Selected="selected"/>
+    }
+}
+
+@code {
+    private const int OutlookMonths = 6;
+
+    private static readonly DialogOptions DialogOptions = new()
+    {
+        CloseOnEscapeKey = true,
+        MaxWidth = MaxWidth.ExtraSmall,
+        FullWidth = true
+    };
+
+    private YearMonth current;
+    private YearMonth selected;
+    private MonthOverview? overview;
+    private IReadOnlyList<MonthSummary>? outlook;
+
+    [Parameter] public int? Year { get; set; }
+
+    [Parameter] public int? Month { get; set; }
+
+    private IReadOnlyList<PlannedItemView> Incomes => Of(PlannedItemKind.Income);
+
+    private IReadOnlyList<PlannedItemView> Expenses => Of(PlannedItemKind.Expense);
+
+    protected override async Task OnParametersSetAsync()
+    {
+        current = YearMonth.From(DateOnly.FromDateTime(Clock.GetLocalNow().DateTime));
+
+        if (Year is null || Month is null)
+        {
+            selected = current;
+        }
+        else if (Month is >= 1 and <= 12 && Year is >= 1 and <= 9999)
+        {
+            selected = new YearMonth(Year.Value, Month.Value);
+        }
+        else
+        {
+            Navigation.NavigateTo("budzet");
+            return;
+        }
+
+        await Reload();
+    }
+
+    private IReadOnlyList<PlannedItemView> Of(PlannedItemKind kind)
+    {
+        return overview?.Items.Where(item => item.Kind == kind).ToList() ?? [];
+    }
+
+    private async Task Reload()
+    {
+        overview = null;
+        outlook = null;
+
+        try
+        {
+            overview = await Dispatcher.Query<GetMonthOverviewQuery, MonthOverview>(new GetMonthOverviewQuery(selected));
+
+            outlook = overview.Summary.IsPast
+                ? null
+                : await Dispatcher.Query<GetMonthsOutlookQuery, IReadOnlyList<MonthSummary>>(
+                    new GetMonthsOutlookQuery(selected, OutlookMonths));
+        }
+        catch (Exception exception)
+        {
+            Snackbar.Add($"Nie udało się wczytać miesiąca: {exception.Message}", Severity.Error);
+        }
+    }
+
+    private Task ShowMonth(YearMonth month)
+    {
+        if (month == selected)
+        {
+            return Reload();
+        }
+
+        Navigation.NavigateTo($"budzet/{month.Year}/{month.Month}");
+        return Task.CompletedTask;
+    }
+
+    private async Task Add(PlannedItemKind kind)
+    {
+        PlannedItemForm? form = await OpenItemDialog(
+            kind == PlannedItemKind.Income ? "Nowy przychód" : "Nowy koszt",
+            PlannedItemForm.For(selected, kind));
+
+        if (form is null)
+        {
+            return;
+        }
+
+        bool saved = await Try(
+            () => Dispatcher.Send<AddPlannedItemCommand, Guid>(
+                new AddPlannedItemCommand(form.ToMonth(), form.Kind, form.Name, form.PlannedAmount)),
+            "Dodano pozycję.");
+
+        if (saved)
+        {
+            await ShowMonth(form.ToMonth());
+        }
+    }
+
+    private async Task Edit(PlannedItemView item)
+    {
+        PlannedItemForm? form = await OpenItemDialog("Edytuj pozycję", PlannedItemForm.For(item, selected));
+
+        if (form is null)
+        {
+            return;
+        }
+
+        bool saved = await Try(
+            () => Dispatcher.Send(
+                new UpdatePlannedItemCommand(item.Id, form.ToMonth(), form.Kind, form.Name, form.PlannedAmount)),
+            "Zapisano zmiany.");
+
+        if (saved)
+        {
+            await ShowMonth(form.ToMonth());
+        }
+    }
+
+    private async Task Delete(PlannedItemView item)
+    {
+        bool? confirmed = await DialogService.ShowMessageBoxAsync(
+            "Usuń pozycję",
+            $"Usunąć „{item.Name}” ({Pl.Money(item.PlannedAmount)})?",
+            yesText: "Usuń",
+            cancelText: "Anuluj");
+
+        if (confirmed != true)
+        {
+            return;
+        }
+
+        if (await Try(() => Dispatcher.Send(new DeletePlannedItemCommand(item.Id)), "Usunięto pozycję."))
+        {
+            await Reload();
+        }
+    }
+
+    private async Task Settle(PlannedItemView item)
+    {
+        DialogParameters<SettleDialog> parameters = new()
+        {
+            { dialog => dialog.Amount, item.ActualAmount ?? item.PlannedAmount },
+            { dialog => dialog.Date, item.SettledOn ?? DateOnly.FromDateTime(Clock.GetLocalNow().DateTime) }
+        };
+
+        string title = item.Kind == PlannedItemKind.Income ? $"Otrzymano: {item.Name}" : $"Zapłacono: {item.Name}";
+        IDialogReference dialog = await DialogService.ShowAsync<SettleDialog>(title, parameters, DialogOptions);
+        DialogResult? result = await dialog.Result;
+
+        if (result is not { Canceled: false, Data: SettleDialog.Result settlement })
+        {
+            StateHasChanged();
+            return;
+        }
+
+        if (await Try(
+                () => Dispatcher.Send(new SettlePlannedItemCommand(item.Id, settlement.Amount, settlement.On)),
+                "Rozliczono pozycję."))
+        {
+            await Reload();
+        }
+    }
+
+    private async Task Unsettle(PlannedItemView item)
+    {
+        if (await Try(() => Dispatcher.Send(new UnsettlePlannedItemCommand(item.Id)), "Cofnięto rozliczenie."))
+        {
+            await Reload();
+        }
+    }
+
+    private async Task EditBalance()
+    {
+        AccountBalanceView account = await Dispatcher.Query<GetAccountBalanceQuery, AccountBalanceView>(new GetAccountBalanceQuery());
+
+        DialogParameters<BalanceDialog> parameters = new() { { dialog => dialog.Balance, account.Balance } };
+        IDialogReference dialog = await DialogService.ShowAsync<BalanceDialog>("Stan konta", parameters, DialogOptions);
+        DialogResult? result = await dialog.Result;
+
+        if (result is not { Canceled: false, Data: decimal balance })
+        {
+            return;
+        }
+
+        if (await Try(() => Dispatcher.Send(new SetAccountBalanceCommand(balance)), "Zapisano stan konta."))
+        {
+            await Reload();
+        }
+    }
+
+    private async Task CopyPlan()
+    {
+        int copied = 0;
+
+        bool done = await Try(
+            async () => copied = await Dispatcher.Send<CopyPlanFromPreviousMonthCommand, int>(
+                new CopyPlanFromPreviousMonthCommand(selected)),
+            "Skopiowano plan.");
+
+        if (done)
+        {
+            Snackbar.Add($"Skopiowano {Pl.ItemsCount(copied)}.", Severity.Info);
+            await Reload();
+        }
+    }
+
+    private async Task<PlannedItemForm?> OpenItemDialog(string title, PlannedItemForm model)
+    {
+        DialogParameters<PlannedItemDialog> parameters = new() { { dialog => dialog.Model, model } };
+        IDialogReference dialog = await DialogService.ShowAsync<PlannedItemDialog>(title, parameters, DialogOptions);
+        DialogResult? result = await dialog.Result;
+
+        return result is { Canceled: false, Data: PlannedItemForm form } ? form : null;
+    }
+
+    private async Task<bool> Try(Func<Task> action, string successMessage)
+    {
+        try
+        {
+            await action();
+            Snackbar.Add(successMessage, Severity.Success);
+            return true;
+        }
+        catch (Exception exception)
+        {
+            Snackbar.Add(exception.Message, Severity.Error);
+            return false;
+        }
+    }
+}

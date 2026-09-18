@@ -1,0 +1,30 @@
+<MudDialog>
+    <DialogContent>
+        <MudText Typo="Typo.body2" Class="mb-4 mud-text-secondary">
+            Ile masz teraz na koncie. Od tej kwoty liczona jest prognoza bieżącego i kolejnych miesięcy.
+        </MudText>
+        <MudNumericField T="decimal" @bind-Value="balance" Label="Stan konta" Format="N2" Culture="Pl.Culture"
+                         HideSpinButtons="true" Adornment="Adornment.End" AdornmentText="zł" AutoFocus="true"/>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Anuluj</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Save">Zapisz</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    private decimal balance;
+
+    [CascadingParameter] private IMudDialogInstance Dialog { get; set; } = default!;
+
+    [Parameter] public decimal Balance { get; set; }
+
+    protected override void OnInitialized()
+    {
+        balance = Balance;
+    }
+
+    private void Save() => Dialog.Close(DialogResult.Ok(balance));
+
+    private void Cancel() => Dialog.Cancel();
+}

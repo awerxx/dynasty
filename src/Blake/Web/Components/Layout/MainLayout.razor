@@ -1,34 +1,33 @@
 @inherits LayoutComponentBase
 
-<MudThemeProvider/>
+<MudThemeProvider Theme="BlakeTheme.Theme" IsDarkMode="true"/>
 <MudPopoverProvider/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
 <MudLayout>
-    <MudAppBar Elevation="1">
+    <MudAppBar Elevation="0" Dense="true">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
-                       OnClick="@ToggleDrawer" aria-label="Navigation menu"/>
-        <MudText Typo="Typo.h6" Class="ml-2">Dynasty.Carrington.Blake.Web</MudText>
+                       OnClick="@ToggleDrawer" aria-label="Menu nawigacji"/>
+        <MudIcon Icon="@Icons.Material.Filled.AccountBalanceWallet" Class="ml-2 mr-2" Color="Color.Primary"/>
+        <MudText Typo="Typo.h6">Blake</MudText>
         <MudSpacer/>
-        <MudIconButton Icon="@Icons.Material.Filled.OpenInNew" Color="Color.Inherit"
-                       Href="https://learn.microsoft.com/aspnet/core/" Target="_blank" title="About"/>
     </MudAppBar>
 
-    <MudDrawer @bind-Open="drawerOpen" Elevation="1" ClipMode="DrawerClipMode.Always">
+    <MudDrawer @bind-Open="drawerOpen" Elevation="0" ClipMode="DrawerClipMode.Always">
         <NavMenu/>
     </MudDrawer>
 
     <MudMainContent Class="pa-4">
-        <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+        <MudContainer MaxWidth="MaxWidth.Large" Class="mt-2">
             @Body
         </MudContainer>
     </MudMainContent>
 </MudLayout>
 
 <div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
+    Wystąpił nieoczekiwany błąd.
+    <a href="." class="reload">Odśwież</a>
     <span class="dismiss">🗙</span>
 </div>
 

@@ -3,10 +3,10 @@
 @inject NavigationManager NavigationManager
 
 <MudNavMenu>
-    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">Home</MudNavLink>
-    <MudNavLink Href="counter" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.AddBox">Counter</MudNavLink>
-    <MudNavLink Href="weather" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.List">Weather</MudNavLink>
-    <MudNavLink Href="auth" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Lock">Auth Required</MudNavLink>
+    <MudNavLink Href="budzet" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.CalendarMonth">Budżet</MudNavLink>
+    <MudNavLink Href="konto" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Filled.Savings">Konto</MudNavLink>
+
+    <MudDivider Class="my-2"/>
 
     <AuthorizeView>
         <Authorized>
@@ -17,15 +17,15 @@
                 <input type="hidden" name="ReturnUrl" value="@currentUrl"/>
                 <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Text" Color="Color.Inherit"
                            FullWidth="true" StartIcon="@Icons.Material.Filled.Logout"
-                           Class="justify-start px-4 py-2">Logout
+                           Class="justify-start px-4 py-2">Wyloguj
                 </MudButton>
             </form>
         </Authorized>
         <NotAuthorized>
             <MudNavLink Href="Account/Register" Match="NavLinkMatch.Prefix"
-                        Icon="@Icons.Material.Filled.PersonAdd">Register</MudNavLink>
+                        Icon="@Icons.Material.Filled.PersonAdd">Rejestracja</MudNavLink>
             <MudNavLink Href="Account/Login" Match="NavLinkMatch.Prefix"
-                        Icon="@Icons.Material.Filled.Login">Login</MudNavLink>
+                        Icon="@Icons.Material.Filled.Login">Logowanie</MudNavLink>
         </NotAuthorized>
     </AuthorizeView>
 </MudNavMenu>

@@ -1,0 +1,88 @@
+@page "/konto"
+@attribute [Authorize]
+
+@using Dynasty.Carrington.Blake.Application.Budgeting.GetAccountBalance
+@using Dynasty.Carrington.Blake.Application.Budgeting.SetAccountBalance
+
+@inject HandlerDispatcher Dispatcher
+@inject ISnackbar Snackbar
+
+<PageTitle>Konto</PageTitle>
+
+<MudText Typo="Typo.h4" Class="mb-4">Konto</MudText>
+
+@if (view is null)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-4"/>
+}
+else
+{
+    <MudGrid>
+        <MudItem xs="12" md="5">
+            <MudPaper Class="pa-4" Outlined="true">
+                <MudText Typo="Typo.overline">Aktualny stan konta</MudText>
+                <MudText Typo="Typo.h4" Color="@(view.IsSet ? Color.Default : Color.Warning)">
+                    @(view.IsSet ? Pl.Money(view.Balance) : "nie ustawiono")
+                </MudText>
+                @if (view.UpdatedAt is { } updatedAt)
+                {
+                    <MudText Typo="Typo.caption" Class="mud-text-secondary">Zaktualizowano @Pl.Timestamp(updatedAt)</MudText>
+                }
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" md="7">
+            <MudPaper Class="pa-4" Outlined="true">
+                <MudText Typo="Typo.body2" Class="mb-3 mud-text-secondary">
+                    Wpisz, ile masz teraz na koncie. Rozliczone przychody i koszty są już w tej kwocie, dlatego prognoza dolicza tylko to, co jeszcze nie przeszło.
+                </MudText>
+                <MudNumericField T="decimal" @bind-Value="balance" Label="Stan konta" Format="N2" Culture="Pl.Culture"
+                                 HideSpinButtons="true" Adornment="Adornment.End" AdornmentText="zł" Class="mb-3"/>
+                <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Save" Disabled="saving">Zapisz</MudButton>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+}
+
+@code {
+    private AccountBalanceView? view;
+    private decimal balance;
+    private bool saving;
+
+    protected override Task OnInitializedAsync()
+    {
+        return Load();
+    }
+
+    private async Task Load()
+    {
+        try
+        {
+            view = await Dispatcher.Query<GetAccountBalanceQuery, AccountBalanceView>(new GetAccountBalanceQuery());
+            balance = view.Balance;
+        }
+        catch (Exception exception)
+        {
+            Snackbar.Add($"Nie udało się wczytać konta: {exception.Message}", Severity.Error);
+        }
+    }
+
+    private async Task Save()
+    {
+        saving = true;
+
+        try
+        {
+            await Dispatcher.Send(new SetAccountBalanceCommand(balance));
+            Snackbar.Add("Zapisano stan konta.", Severity.Success);
+            await Load();
+        }
+        catch (Exception exception)
+        {
+            Snackbar.Add(exception.Message, Severity.Error);
+        }
+        finally
+        {
+            saving = false;
+        }
+    }
+}

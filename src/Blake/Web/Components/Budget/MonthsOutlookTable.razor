@@ -1,0 +1,38 @@
+<MudPaper Class="pa-4 mt-4" Outlined="true">
+    <MudText Typo="Typo.h6" Class="mb-2">Prognoza na kolejne miesiące</MudText>
+    <MudSimpleTable Dense="true" Hover="true" Elevation="0" Style="overflow-x: auto;">
+        <thead>
+        <tr>
+            <th>Miesiąc</th>
+            <th style="text-align: right">Otwarcie</th>
+            <th style="text-align: right">Przychody</th>
+            <th style="text-align: right">Koszty</th>
+            <th style="text-align: right">Zamknięcie</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (MonthSummary month in Months)
+        {
+            <tr class="@(month.Month == Selected ? "outlook-selected" : null)">
+                <td style="text-transform: capitalize">
+                    <MudLink Href="@($"budzet/{month.Month.Year}/{month.Month.Month}")" Color="Color.Default">@Pl.MonthName(month.Month)</MudLink>
+                </td>
+                <td style="text-align: right">@Pl.Money(month.OpeningBalance)</td>
+                <td style="text-align: right">@Pl.Money(month.RemainingIncome)</td>
+                <td style="text-align: right">@Pl.Money(month.RemainingExpenses)</td>
+                <td style="text-align: right">
+                    <MudText Typo="Typo.body2" Inline="true" Color="@((month.ClosingBalance ?? 0m) < 0 ? Color.Error : Color.Success)">
+                        @Pl.Money(month.ClosingBalance)
+                    </MudText>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </MudSimpleTable>
+</MudPaper>
+
+@code {
+    [Parameter, EditorRequired] public IReadOnlyList<MonthSummary> Months { get; set; } = [];
+
+    [Parameter] public YearMonth Selected { get; set; }
+}

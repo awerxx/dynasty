@@ -1,0 +1,21 @@
+<MudStack Row="true" AlignItems="AlignItems.Center" Class="mb-4" Spacing="1">
+    <MudIconButton Icon="@Icons.Material.Filled.ChevronLeft" Href="@Link(Month.Previous())" aria-label="Poprzedni miesiąc"/>
+    <MudText Typo="Typo.h4" Class="mx-2" Style="min-width: 14rem; text-align: center; text-transform: capitalize;">
+        @Pl.MonthName(Month)
+    </MudText>
+    <MudIconButton Icon="@Icons.Material.Filled.ChevronRight" Href="@Link(Month.Next())" aria-label="Następny miesiąc"/>
+    @if (!IsCurrent)
+    {
+        <MudButton Variant="Variant.Outlined" Size="Size.Small" Href="budzet" StartIcon="@Icons.Material.Filled.Today" Class="ml-2">
+            Dziś
+        </MudButton>
+    }
+</MudStack>
+
+@code {
+    [Parameter, EditorRequired] public YearMonth Month { get; set; }
+
+    [Parameter] public bool IsCurrent { get; set; }
+
+    private static string Link(YearMonth month) => $"budzet/{month.Year}/{month.Month}";
+}

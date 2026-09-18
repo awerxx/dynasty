@@ -1,0 +1,61 @@
+@if (Summary.IsPast)
+{
+    <MudGrid Class="mb-4">
+        <MudItem xs="12" sm="4">
+            @Card("Rozliczone przychody", Pl.Money(Summary.SettledIncome), Color.Success, Icons.Material.Filled.ArrowDownward)
+        </MudItem>
+        <MudItem xs="12" sm="4">
+            @Card("Rozliczone koszty", Pl.Money(Summary.SettledExpenses), Color.Error, Icons.Material.Filled.ArrowUpward)
+        </MudItem>
+        <MudItem xs="12" sm="4">
+            @Card("Bilans miesiąca", Pl.Money(Summary.SettledIncome - Summary.SettledExpenses), SignColor(Summary.SettledIncome - Summary.SettledExpenses), Icons.Material.Filled.Balance)
+        </MudItem>
+    </MudGrid>
+
+    @if (Summary.UnsettledCount > 0)
+    {
+        <MudAlert Severity="Severity.Warning" Class="mb-4" Dense="true">
+            W tym miesiącu zostało @Pl.ItemsCount(Summary.UnsettledCount) bez rozliczenia. Miesiąc jest już zamknięty, więc nie wpływają na prognozę.
+        </MudAlert>
+    }
+}
+else
+{
+    <MudGrid Class="mb-4">
+        <MudItem xs="12" sm="6" md="3">
+            <MudPaper Class="pa-4 summary-card" Outlined="true" Style="cursor: pointer;" @onclick="OnEditBalance">
+                <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+                    <MudText Typo="Typo.overline">@(Summary.IsCurrent ? "Stan konta" : "Saldo otwarcia (prognoza)")</MudText>
+                    <MudIcon Icon="@(Summary.IsCurrent ? Icons.Material.Filled.Edit : Icons.Material.Filled.TrendingFlat)" Size="Size.Small" Color="Color.Secondary"/>
+                </MudStack>
+                <MudText Typo="Typo.h5">@Pl.Money(Summary.OpeningBalance)</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="3">
+            @Card("Pozostałe przychody", Pl.Money(Summary.RemainingIncome), Color.Success, Icons.Material.Filled.ArrowDownward)
+        </MudItem>
+        <MudItem xs="12" sm="6" md="3">
+            @Card("Pozostałe koszty", Pl.Money(Summary.RemainingExpenses), Color.Error, Icons.Material.Filled.ArrowUpward)
+        </MudItem>
+        <MudItem xs="12" sm="6" md="3">
+            @Card("Zostanie na koniec miesiąca", Pl.Money(Summary.ClosingBalance), SignColor(Summary.ClosingBalance ?? 0m), Icons.Material.Filled.Flag, true)
+        </MudItem>
+    </MudGrid>
+}
+
+@code {
+    [Parameter, EditorRequired] public MonthSummary Summary { get; set; } = default!;
+
+    [Parameter] public EventCallback OnEditBalance { get; set; }
+
+    private static Color SignColor(decimal amount) => amount < 0 ? Color.Error : Color.Success;
+
+    private static RenderFragment Card(string label, string value, Color color, string icon, bool emphasized = false) =>
+        @<MudPaper Class="pa-4 summary-card" Outlined="true">
+            <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+                <MudText Typo="Typo.overline">@label</MudText>
+                <MudIcon Icon="@icon" Size="Size.Small" Color="@color"/>
+            </MudStack>
+            <MudText Typo="Typo.h5" Color="@(emphasized ? color : Color.Default)">@value</MudText>
+        </MudPaper>;
+}

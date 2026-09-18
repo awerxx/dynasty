@@ -59,3 +59,22 @@
 .recovery-code {
     font-family: var(--mud-typography-body1-family, monospace);
 }
+
+/* Budget: settled rows are done and visually recede */
+.item-settled td {
+    opacity: 0.6;
+}
+
+.item-settled td.item-name {
+    text-decoration: line-through;
+}
+
+/* Budget: the month currently open in the outlook table */
+.outlook-selected td {
+    font-weight: 600;
+    background: var(--mud-palette-table-striped);
+}
+
+.summary-card {
+    height: 100%;
+}

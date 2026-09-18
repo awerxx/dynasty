@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "blake-web",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "--project", "src/Blake/Web/Web.csproj", "--launch-profile", "http", "--no-launch-profile-browser"],
+      "port": 5151
+    }
+  ]
+}

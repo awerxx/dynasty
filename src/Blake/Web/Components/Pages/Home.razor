@@ -1,7 +1,12 @@
 @page "/"
 
-<PageTitle>Home</PageTitle>
+@inject NavigationManager Navigation
 
-<MudText Typo="Typo.h3" GutterBottom="true">Hello, world!</MudText>
+@code {
 
-<MudText Typo="Typo.body1">Welcome to your new app.</MudText>
+    protected override void OnInitialized()
+    {
+        Navigation.NavigateTo("budzet");
+    }
+
+}

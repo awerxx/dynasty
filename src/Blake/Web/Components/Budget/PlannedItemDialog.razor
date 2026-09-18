@@ -1,0 +1,60 @@
+<MudDialog>
+    <DialogContent>
+        <MudForm @ref="form">
+            <MudTextField T="string" @bind-Value="Model.Name" Label="Nazwa" Required="true" RequiredError="Podaj nazwę"
+                          MaxLength="PlannedItem.MaxNameLength" Immediate="true" AutoFocus="true" Class="mb-3"/>
+
+            <MudSelect T="PlannedItemKind" @bind-Value="Model.Kind" Label="Rodzaj" Class="mb-3">
+                <MudSelectItem T="PlannedItemKind" Value="PlannedItemKind.Income">Przychód</MudSelectItem>
+                <MudSelectItem T="PlannedItemKind" Value="PlannedItemKind.Expense">Koszt</MudSelectItem>
+            </MudSelect>
+
+            <MudNumericField T="decimal" @bind-Value="Model.PlannedAmount" Label="Planowana kwota" Format="N2"
+                             Culture="Pl.Culture" Min="0" HideSpinButtons="true" Adornment="Adornment.End" AdornmentText="zł"
+                             Validation="@(new Func<decimal, string?>(AmountError))" Immediate="true" Class="mb-3"/>
+
+            <MudGrid Spacing="2">
+                <MudItem xs="7">
+                    <MudSelect T="int" @bind-Value="Model.Month" Label="Miesiąc">
+                        @for (int month = 1; month <= 12; month++)
+                        {
+                            int value = month;
+                            <MudSelectItem T="int" Value="value">@Pl.MonthNameOnly(value)</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="5">
+                    <MudNumericField T="int" @bind-Value="Model.Year" Label="Rok" Min="2000" Max="2100" HideSpinButtons="true"/>
+                </MudItem>
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Anuluj</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Save">Zapisz</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    private MudForm form = default!;
+
+    [CascadingParameter] private IMudDialogInstance Dialog { get; set; } = default!;
+
+    [Parameter] public PlannedItemForm Model { get; set; } = new();
+
+    private static string? AmountError(decimal amount) => amount > 0 ? null : "Kwota musi być większa od zera";
+
+    private async Task Save()
+    {
+        await form.ValidateAsync();
+
+        if (!form.IsValid)
+        {
+            return;
+        }
+
+        Dialog.Close(DialogResult.Ok(Model));
+    }
+
+    private void Cancel() => Dialog.Cancel();
+}

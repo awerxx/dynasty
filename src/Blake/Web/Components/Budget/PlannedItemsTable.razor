@@ -1,0 +1,89 @@
+<MudPaper Class="pa-4" Outlined="true">
+    <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Class="mb-2">
+        <MudText Typo="Typo.h6">@Title</MudText>
+        <MudButton StartIcon="@Icons.Material.Filled.Add" Variant="Variant.Text" Color="Color.Primary"
+                   Size="Size.Small" OnClick="OnAdd">
+            Dodaj
+        </MudButton>
+    </MudStack>
+
+    @if (Items.Count == 0)
+    {
+        <MudText Typo="Typo.body2" Class="mud-text-secondary py-4">Brak pozycji.</MudText>
+    }
+    else
+    {
+        <MudTable T="PlannedItemView" Items="Items" Dense="true" Hover="true" Elevation="0" RowClassFunc="RowClass">
+            <HeaderContent>
+                <MudTh>Nazwa</MudTh>
+                <MudTh Style="text-align: right">Plan</MudTh>
+                <MudTh Style="text-align: right">Rzeczywiste</MudTh>
+                <MudTh>@SettledColumn</MudTh>
+                <MudTh></MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Nazwa" Class="item-name">@context.Name</MudTd>
+                <MudTd DataLabel="Plan" Style="text-align: right">@Pl.Money(context.PlannedAmount)</MudTd>
+                <MudTd DataLabel="Rzeczywiste" Style="text-align: right">@Pl.Money(context.ActualAmount)</MudTd>
+                <MudTd DataLabel="@SettledColumn">
+                    <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="0">
+                        <MudTooltip Text="@(context.IsSettled ? "Cofnij rozliczenie" : SettleAction)">
+                            <MudCheckBox T="bool" Value="context.IsSettled" ValueChanged="@((bool settled) => Toggle(context, settled))"
+                                         Color="Color.Success" Size="Size.Small" Dense="true"/>
+                        </MudTooltip>
+                        @if (context.IsSettled)
+                        {
+                            <MudChip T="string" Size="Size.Small" Color="Color.Success" Variant="Variant.Text">
+                                @SettledColumn @Pl.ShortDate(context.SettledOn!.Value)
+                            </MudChip>
+                        }
+                    </MudStack>
+                </MudTd>
+                <MudTd Style="text-align: right; white-space: nowrap">
+                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" aria-label="Edytuj"
+                                   OnClick="@(() => OnEdit.InvokeAsync(context))"/>
+                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" aria-label="Usuń"
+                                   OnClick="@(() => OnDelete.InvokeAsync(context))"/>
+                </MudTd>
+            </RowTemplate>
+            <FooterContent>
+                <MudTd>Razem</MudTd>
+                <MudTd Style="text-align: right">@Pl.Money(Items.Sum(item => item.PlannedAmount))</MudTd>
+                <MudTd Style="text-align: right">@Pl.Money(Items.Sum(item => item.ActualAmount ?? 0m))</MudTd>
+                <MudTd colspan="2"></MudTd>
+            </FooterContent>
+        </MudTable>
+    }
+</MudPaper>
+
+@code {
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired] public PlannedItemKind Kind { get; set; }
+
+    [Parameter, EditorRequired] public IReadOnlyList<PlannedItemView> Items { get; set; } = [];
+
+    [Parameter] public EventCallback OnAdd { get; set; }
+
+    [Parameter] public EventCallback<PlannedItemView> OnEdit { get; set; }
+
+    [Parameter] public EventCallback<PlannedItemView> OnDelete { get; set; }
+
+    [Parameter] public EventCallback<PlannedItemView> OnSettle { get; set; }
+
+    [Parameter] public EventCallback<PlannedItemView> OnUnsettle { get; set; }
+
+    private string SettledColumn => Kind == PlannedItemKind.Income ? "Otrzymano" : "Zapłacono";
+
+    private string SettleAction => Kind == PlannedItemKind.Income ? "Oznacz jako otrzymane" : "Oznacz jako zapłacone";
+
+    private Task Toggle(PlannedItemView item, bool settled)
+    {
+        return settled ? OnSettle.InvokeAsync(item) : OnUnsettle.InvokeAsync(item);
+    }
+
+    private static string RowClass(PlannedItemView item, int index)
+    {
+        return item.IsSettled ? "item-settled" : string.Empty;
+    }
+}
