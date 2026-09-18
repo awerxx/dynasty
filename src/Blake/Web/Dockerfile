@@ -8,9 +8,11 @@ FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Directory.Build.props", "Directory.Packages.props", "./"]
+COPY ["src/Dynasty.Carrington.Core/Dynasty.Carrington.Core.csproj", "src/Dynasty.Carrington.Core/"]
+COPY ["src/Blake/Domain/Domain.csproj", "src/Blake/Domain/"]
+COPY ["src/Blake/Application/Application.csproj", "src/Blake/Application/"]
+COPY ["src/Blake/Infrastructure.Database/Infrastructure.Database.csproj", "src/Blake/Infrastructure.Database/"]
 COPY ["src/Blake/Web/Web.csproj", "src/Blake/Web/"]
-COPY ["src/Blake/Web.Client/Web.Client.csproj", "src/Blake/Web.Client/"]
-COPY ["src/Blake/Web.Shared/Web.Shared.csproj", "src/Blake/Web.Shared/"]
 RUN dotnet restore "src/Blake/Web/Web.csproj"
 COPY . .
 WORKDIR "/src/src/Blake/Web"

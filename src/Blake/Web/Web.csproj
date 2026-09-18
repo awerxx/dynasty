@@ -16,9 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Web.Shared\Web.Shared.csproj" />
-    <ProjectReference Include="..\Web.Client\Web.Client.csproj"/>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server"/>
+    <ProjectReference Include="..\Application\Application.csproj"/>
+    <ProjectReference Include="..\Infrastructure.Database\Infrastructure.Database.csproj"/>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore"/>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite"/>

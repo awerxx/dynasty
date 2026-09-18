@@ -7,8 +7,6 @@
     <Project Path="src/Dynasty.Carrington.Core/Dynasty.Carrington.Core.csproj" />
   </Folder>
   <Folder Name="/Carrington/Blake/">
-    <Project Path="src/Blake/Web.Shared/Web.Shared.csproj" />
-    <Project Path="src/Blake/Web.Client/Web.Client.csproj" />
     <Project Path="src/Blake/Web/Web.csproj" />
     <Project Path="src/Blake/Application/Application.csproj" />
     <Project Path="src/Blake/Domain/Domain.csproj" />

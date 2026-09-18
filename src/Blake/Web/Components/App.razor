@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="pl">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -16,7 +15,6 @@
     <link rel="icon" type="image/png" href="favicon.png"/>
     <HeadOutlet @rendermode="PageRenderMode"/>
 </head>
-
 <body>
 <Routes @rendermode="PageRenderMode"/>
 <ReconnectModal/>
@@ -24,13 +22,11 @@
 <script src="_content/MudBlazor/MudBlazor.min.js"></script>
 <script src="@Assets["Components/Account/Shared/PasskeySubmit.razor.js"]" type="module"></script>
 </body>
-
 </html>
 
 @code {
     [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
 
     private IComponentRenderMode? PageRenderMode =>
-        HttpContext.AcceptsInteractiveRouting() ? InteractiveAuto : null;
-
+        HttpContext.AcceptsInteractiveRouting() ? InteractiveServer : null;
 }
