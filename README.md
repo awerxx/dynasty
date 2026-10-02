@@ -7,8 +7,8 @@ modules never reference each other.
 ## Modules
 
 - **Blake** — Blazor Server (InteractiveServer) home-budget planner with a Polish UI: planned incomes/costs per month, settlement with actual amounts, account balance and a month-by-month projection. Identity users live in SQLite (`src/Blake/Web/Data/app.db`); budget data is EF InMemory for now (lost on restart) until Postgres is wired in.
-- **Linda** — ASP.NET Core WebAPI backend for individual users.
-- **Alexis** — Next.js UI ([src/Dynasty.Carrington.Alexis](src/Dynasty.Carrington.Alexis)) that talks to Linda (expenses etc.).
+- **Krystle** — ASP.NET Core WebAPI backend for individual users.
+- **Alexis** — Next.js UI ([src/Dynasty.Carrington.Alexis](src/Dynasty.Carrington.Alexis)) that talks to Krystle (expenses etc.).
 
 ## Layout & conventions
 

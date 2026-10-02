@@ -22,8 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Linda\Application\Application.csproj"/>
-    <ProjectReference Include="..\..\src\Linda\Domain\Domain.csproj"/>
+    <ProjectReference Include="..\..\src\Krystle\Application\Application.csproj"/>
+    <ProjectReference Include="..\..\src\Krystle\Domain\Domain.csproj"/>
   </ItemGroup>
 
 </Project>

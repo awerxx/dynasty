@@ -1,4 +1,4 @@
-﻿namespace Dynasty.Carrington.Linda.Tests;
+﻿namespace Dynasty.Carrington.Krystle.Tests;
 
 public class UnitTest1
 {

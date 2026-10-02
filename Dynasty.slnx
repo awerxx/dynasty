@@ -12,11 +12,11 @@
     <Project Path="src/Blake/Domain/Domain.csproj" />
     <Project Path="src/Blake/Infrastructure.Database/Infrastructure.Database.csproj" />
   </Folder>
-  <Folder Name="/Carrington/Linda/">
-    <Project Path="src/Linda/Api/Api.csproj" />
-    <Project Path="src/Linda/Application/Application.csproj" />
-    <Project Path="src/Linda/Domain/Domain.csproj" />
-    <Project Path="src/Linda/Infrastructure/Infrastructure.csproj" />
+  <Folder Name="/Carrington/Krystle/">
+    <Project Path="src/Krystle/Api/Api.csproj" />
+    <Project Path="src/Krystle/Application/Application.csproj" />
+    <Project Path="src/Krystle/Domain/Domain.csproj" />
+    <Project Path="src/Krystle/Infrastructure/Infrastructure.csproj" />
   </Folder>
   <Folder Name="/SolutionFolder/">
     <File Path=".editorconfig" />
@@ -29,7 +29,7 @@
   </Folder>
   <Folder Name="/Tests/">
     <Project Path="tests/Dynasty.Carrington.Blake.Tests/Dynasty.Carrington.Blake.Tests.csproj" />
-    <Project Path="tests/Dynasty.Carrington.Linda.Tests/Dynasty.Carrington.Linda.Tests.csproj" />
+    <Project Path="tests/Dynasty.Carrington.Krystle.Tests/Dynasty.Carrington.Krystle.Tests.csproj" />
   </Folder>
   <Project Path="src/Dynasty.Utils/Dynasty.Utils.csproj" />
 </Solution>

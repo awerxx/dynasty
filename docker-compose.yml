@@ -1,8 +1,8 @@
 services:
-  linda-api:
+  krystle-api:
     build:
       context: .
-      dockerfile: src/Linda/Api/Dockerfile
+      dockerfile: src/Krystle/Api/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080

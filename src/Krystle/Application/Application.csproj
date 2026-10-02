@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <AssemblyName>Dynasty.Carrington.Linda.Application</AssemblyName>
-    <RootNamespace>Dynasty.Carrington.Linda.Application</RootNamespace>
+    <AssemblyName>Dynasty.Carrington.Krystle.Application</AssemblyName>
+    <RootNamespace>Dynasty.Carrington.Krystle.Application</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
