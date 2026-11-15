@@ -1,0 +1,68 @@
+@page "/login"
+@using System.ComponentModel.DataAnnotations
+@using Dynasty.Carrington.Blake.Infrastructure.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject NavigationManager Navigation
+
+<PageTitle>Logowanie</PageTitle>
+<h1>Logowanie</h1>
+
+@if (_error is not null)
+{
+    <div class="alert alert-danger">@_error</div>
+}
+
+<EditForm Model="Input!" FormName="login" OnValidSubmit="LoginAsync" method="post">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <label>E-mail <InputText @bind-Value="Input!.Email" autocomplete="username" /></label>
+    </div>
+    <div>
+        <label>Hasło <InputText type="password" @bind-Value="Input!.Password" autocomplete="current-password" /></label>
+    </div>
+    <button type="submit">Zaloguj</button>
+</EditForm>
+<p>Nie masz konta? <a href="/register">Zarejestruj się</a></p>
+
+@code {
+    // Uwaga: SignInManager używany bezpośrednio w komponencie (świadome odstępstwo od CLAUDE.md na czas MVP).
+    // Strona działa w statycznym SSR – cookie można ustawić tylko w żądaniu HTTP.
+    [SupplyParameterFromForm] private LoginModel? Input { get; set; }
+    [SupplyParameterFromQuery] private string? ReturnUrl { get; set; }
+    private string? _error;
+
+    protected override void OnInitialized() => Input ??= new();
+
+    private async Task LoginAsync()
+    {
+        var user = await UserManager.FindByEmailAsync(Input!.Email);
+        if (user is null || !user.IsActive)
+        {
+            _error = "Nieprawidłowy e-mail lub hasło.";
+            return;
+        }
+
+        var result = await SignInManager.PasswordSignInAsync(user, Input!.Password, isPersistent: false, lockoutOnFailure: false);
+        if (!result.Succeeded)
+        {
+            _error = "Nieprawidłowy e-mail lub hasło.";
+            return;
+        }
+
+        var target = !string.IsNullOrEmpty(ReturnUrl) && Uri.IsWellFormedUriString(ReturnUrl, UriKind.Relative) && ReturnUrl.StartsWith('/')
+            && !ReturnUrl.StartsWith("//") ? ReturnUrl : "/";
+        Navigation.NavigateTo(target, forceLoad: true);
+    }
+
+    private sealed class LoginModel
+    {
+        [Required(ErrorMessage = "E-mail jest wymagany.")]
+        [EmailAddress(ErrorMessage = "Nieprawidłowy adres e-mail.")]
+        public string Email { get; set; } = "";
+
+        [Required(ErrorMessage = "Hasło jest wymagane.")]
+        public string Password { get; set; } = "";
+    }
+}

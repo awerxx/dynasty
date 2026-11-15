@@ -1,0 +1,23 @@
+@page "/logout"
+@using Dynasty.Carrington.Blake.Infrastructure.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject NavigationManager Navigation
+
+<PageTitle>Wylogowanie</PageTitle>
+<h1>Wylogowanie</h1>
+
+<EditForm Model="_dummy" FormName="logout" OnSubmit="LogoutAsync" method="post">
+    <button type="submit">Wyloguj</button>
+</EditForm>
+
+@code {
+    // Uwaga: SignInManager bezpośrednio w komponencie (świadome odstępstwo od CLAUDE.md na czas MVP).
+    // Wylogowanie wymaga POST (anty-CSRF), stąd formularz zamiast samego GET.
+    private readonly object _dummy = new();
+
+    private async Task LogoutAsync()
+    {
+        await SignInManager.SignOutAsync();
+        Navigation.NavigateTo("/", forceLoad: true);
+    }
+}

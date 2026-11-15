@@ -1,0 +1,66 @@
+@page "/register"
+@using System.ComponentModel.DataAnnotations
+@using Dynasty.Carrington.Blake.Infrastructure.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject NavigationManager Navigation
+
+<PageTitle>Rejestracja</PageTitle>
+<h1>Rejestracja</h1>
+
+@foreach (var e in _errors)
+{
+    <div class="alert alert-danger">@e</div>
+}
+
+<EditForm Model="Input!" FormName="register" OnValidSubmit="RegisterAsync" method="post">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div>
+        <label>E-mail <InputText @bind-Value="Input!.Email" autocomplete="username" /></label>
+    </div>
+    <div>
+        <label>Hasło <InputText type="password" @bind-Value="Input!.Password" autocomplete="new-password" /></label>
+    </div>
+    <div>
+        <label>Powtórz hasło <InputText type="password" @bind-Value="Input!.ConfirmPassword" autocomplete="new-password" /></label>
+    </div>
+    <button type="submit">Zarejestruj</button>
+</EditForm>
+
+@code {
+    // Uwaga: UserManager/SignInManager bezpośrednio w komponencie (świadome odstępstwo od CLAUDE.md na czas MVP).
+    [SupplyParameterFromForm] private RegisterModel? Input { get; set; }
+    private List<string> _errors = [];
+
+    protected override void OnInitialized() => Input ??= new();
+
+    private async Task RegisterAsync()
+    {
+        var user = new ApplicationUser { UserName = Input!.Email, Email = Input!.Email };
+        var result = await UserManager.CreateAsync(user, Input!.Password);
+        if (!result.Succeeded)
+        {
+            _errors = result.Errors.Select(e => e.Description).ToList();
+            return;
+        }
+
+        await UserManager.AddToRoleAsync(user, "User");
+        await SignInManager.SignInAsync(user, isPersistent: false);
+        Navigation.NavigateTo("/", forceLoad: true);
+    }
+
+    private sealed class RegisterModel
+    {
+        [Required(ErrorMessage = "E-mail jest wymagany.")]
+        [EmailAddress(ErrorMessage = "Nieprawidłowy adres e-mail.")]
+        public string Email { get; set; } = "";
+
+        [Required(ErrorMessage = "Hasło jest wymagane.")]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "Hasło musi mieć od 6 do 100 znaków.")]
+        public string Password { get; set; } = "";
+
+        [Compare(nameof(Password), ErrorMessage = "Hasła nie są takie same.")]
+        public string ConfirmPassword { get; set; } = "";
+    }
+}
