@@ -56,3 +56,17 @@ Specyfikacja produktu: `SPEC.md`. UI po polsku, kwoty w PLN (`pl-PL`).
 - User widzi tylko swoje dane: każde zapytanie filtruje po `OwnerId`
 - Admin nie widzi dashboardu ani danych finansowych Usera: osobne layouty, `[Authorize(Roles = "...")]` na stronach i `RequireAuthorization` na endpointach
 - Po dezaktywacji konta lub resecie hasła wywołaj `UserManager.UpdateSecurityStampAsync`, żeby unieważnić aktywne sesje
+
+## Agent skills
+
+### Issue tracker
+
+Issues i specyfikacje w GitHub Issues (`awerxx/dynasty`), obsługa przez `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Domyślne etykiety: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: `GLOSSARY.md` i `docs/adr/` w katalogu głównym. See `docs/agents/domain.md`.
