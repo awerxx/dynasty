@@ -1,4 +1,3 @@
-using Dynasty.Carrington.Blake.Domain.Common;
 
 namespace Dynasty.Carrington.Blake.Domain.Entities;
 
@@ -6,7 +5,7 @@ namespace Dynasty.Carrington.Blake.Domain.Entities;
 public sealed class Expense
 {
 
-    public Guid Id { get;  set; }
+    public Guid Id { get; set; } = Guid.CreateVersion7();
     public string OwnerId { get;  set; }
     public Guid AccountId { get;  set; }
     public Account? Account { get;  set; }

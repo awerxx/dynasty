@@ -1,11 +1,10 @@
-using Dynasty.Carrington.Blake.Domain.Common;
 using Dynasty.Carrington.Blake.Domain.Enums;
 
 namespace Dynasty.Carrington.Blake.Domain.Entities;
 
 public sealed class Account
 {
-    public Guid Id { get;  set; }
+    public Guid Id { get; set; } = Guid.CreateVersion7();
     public string OwnerId { get;  set; }
     public string Name { get;  set; }
     public Currency Currency { get;  set; }
